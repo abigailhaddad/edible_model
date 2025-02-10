@@ -81,20 +81,56 @@ def train_model(train_dataset, eval_dataset, model_checkpoint, training_args):
     trainer.train()
     return trainer
 
-def evaluate_model(trainer, dataset):
+def evaluate_model(trainer, dataset, dataset_name="test"):
+    """
+    Evaluates the model using the dataset and logs key metrics, including the confusion matrix breakdown
+    and actual examples for TP, FP, TN, and FN.
+    """
     predictions_output = trainer.predict(dataset)
     predictions = np.argmax(predictions_output.predictions, axis=-1)
     true_labels = dataset['label']
-    
+    texts = dataset['text']  # Extract text examples
+
     cm = confusion_matrix(true_labels, predictions)
     acc = accuracy_score(true_labels, predictions)
-    
+    f1 = f1_score(true_labels, predictions)
+
+    # Extracting TP, FP, TN, FN explicitly
+    tn, fp, fn, tp = cm.ravel()
+
+    # Identify examples in each category
+    tp_examples = [(texts[i], true_labels[i], predictions[i]) for i in range(len(predictions)) if true_labels[i] == 1 and predictions[i] == 1]
+    fp_examples = [(texts[i], true_labels[i], predictions[i]) for i in range(len(predictions)) if true_labels[i] == 0 and predictions[i] == 1]
+    tn_examples = [(texts[i], true_labels[i], predictions[i]) for i in range(len(predictions)) if true_labels[i] == 0 and predictions[i] == 0]
+    fn_examples = [(texts[i], true_labels[i], predictions[i]) for i in range(len(predictions)) if true_labels[i] == 1 and predictions[i] == 0]
+
+    logger.info(f"Evaluation on {dataset_name} set:")
     logger.info(f"Confusion Matrix:\n{cm}")
     logger.info(f"Accuracy: {acc:.4f}")
-    logger.info(f"F1 Score: {f1_score(true_labels, predictions):.4f}")
+    logger.info(f"F1 Score: {f1:.4f}")
     logger.info(f"Classification Report:\n{classification_report(true_labels, predictions)}")
-    
-    return cm, acc
+
+    # Log the counts of each category
+    logger.info(f"Breakdown:\n"
+                f"True Positives (TP): {tp} \n"
+                f"False Positives (FP): {fp} \n"
+                f"True Negatives (TN): {tn} \n"
+                f"False Negatives (FN): {fn} \n")
+
+    # Log actual examples
+    def log_examples(category, examples, limit=5):
+        """Helper function to log example texts with true and predicted labels"""
+        logger.info(f"\n{category} Examples ({len(examples)} found, showing up to {limit}):")
+        for text, true_label, predicted_label in examples[:limit]:
+            logger.info(f"Text: {text}\n  True Label: {true_label}, Predicted: {predicted_label}\n")
+
+    log_examples("True Positives (TP)", tp_examples)
+    log_examples("False Positives (FP)", fp_examples)
+    log_examples("True Negatives (TN)", tn_examples)
+    log_examples("False Negatives (FN)", fn_examples)
+
+    return cm, acc, f1, tp, fp, tn, fn
+
 
 def generate_predictions_dataframe(trainer, tokenized_dataset):
     def get_predictions(dataset, dataset_name):
