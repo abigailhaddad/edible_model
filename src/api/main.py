@@ -9,13 +9,18 @@ sys.path.append(str(model_path))
 from inference import load_model
 
 app = FastAPI()
-model = load_model()  # Single model instance
+model = load_model()
+
+# Replace with your GitHub Pages domain
+ALLOWED_ORIGINS = [
+    "https://abigailhaddad.github.io"
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["POST", "GET"],  # Specify only the methods you need
     allow_headers=["*"],
 )
 
@@ -23,11 +28,11 @@ class TextInput(BaseModel):
     text: str
 
 @app.post("/predict")
-def predict(input_data: TextInput):  # Remove async
+def predict(input_data: TextInput):
     result = model.predict(input_data.text)
     print(f"Input: {input_data.text}, Result: {result}")
     return result
 
 @app.get("/")
-def root():  # Remove async
+def root():
     return {"status": "alive"}
