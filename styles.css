@@ -1,0 +1,45 @@
+body {
+    background: url('background.jpeg') center/cover fixed;
+    margin: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.result-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    transition: all 0.2s ease;
+ }
+ 
+ .result-card.edible {
+    background: rgba(22, 163, 74, 0.1);
+    border: 1px solid rgba(22, 163, 74, 0.2);
+ }
+ 
+ .result-card.not-edible {
+    background: rgba(220, 38, 38, 0.1);
+    border: 1px solid rgba(220, 38, 38, 0.2);
+ }
+ 
+ .result-card.uncertain {
+    background: rgba(234, 179, 8, 0.1);
+    border: 1px solid rgba(234, 179, 8, 0.2);
+ }
+ 
+ .verdict {
+    font-size: 1.25rem;
+    font-weight: 500;
+ }
