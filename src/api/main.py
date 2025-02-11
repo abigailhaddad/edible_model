@@ -23,11 +23,11 @@ class TextInput(BaseModel):
     text: str
 
 @app.post("/predict")
-async def predict(input_data: TextInput):
+def predict(input_data: TextInput):  # Remove async
     result = model.predict(input_data.text)
     print(f"Input: {input_data.text}, Result: {result}")
     return result
 
 @app.get("/")
-async def root():
+def root():  # Remove async
     return {"status": "alive"}
