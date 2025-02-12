@@ -68,7 +68,7 @@ async function checkEdibility() {
                 </div>
                 <div class="text-sm text-gray-600 mt-2">
                     ${input.value.length > 30 ?
-                      `Your input is ${input.value.length} characters long. Please keep it under 30 characters.`
+                      `Your input is ${input.value.length} characters long.`
                       : ''}
                 </div>
             </div>
