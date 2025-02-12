@@ -2,5 +2,4 @@ myenv/
 /src/model/checkpoints/
 /src/model/results/
 /src/model/saved_model/
-/src/model/synthetic_data/
 .DS_Store
