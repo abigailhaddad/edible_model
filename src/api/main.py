@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import sys
@@ -23,11 +23,18 @@ class TextInput(BaseModel):
     text: str
 
 @app.post("/predict")
-def predict(input_data: TextInput):  # Remove async
+async def predict(input_data: TextInput):
+    # Check input length
+    if len(input_data.text) > 30:
+        raise HTTPException(
+            status_code=400,
+            detail="Input text is too long. Please keep it under 30 characters."
+        )
+
     result = model.predict(input_data.text)
     print(f"Input: {input_data.text}, Result: {result}")
     return result
 
 @app.get("/")
-def root():  # Remove async
+async def root():
     return {"status": "alive"}
