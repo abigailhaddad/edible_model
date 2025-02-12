@@ -43,3 +43,19 @@ body {
     font-size: 1.25rem;
     font-weight: 500;
  }
+
+ .footer {
+   text-align: center;
+   margin-top: 20px;
+   font-size: 0.9em;
+   color: #666;
+}
+
+.footer a {
+   color: #2563eb;
+   text-decoration: none;
+}
+
+.footer a:hover {
+   text-decoration: underline;
+}
