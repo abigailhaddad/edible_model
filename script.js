@@ -33,9 +33,11 @@ async function checkEdibility() {
 
         if (!response.ok) {
             const errorData = await response.json();
+            console.log('Error response:', errorData); // For debugging
             throw new Error(errorData.detail || 'Error making prediction');
         }
 
+        // We only try to parse response as JSON if the previous response.ok check passed
         const data = await response.json();
         const confidence = Math.round(data.confidence * 100);
         const prediction = data.prediction.replace('_', ' ');
@@ -57,10 +59,18 @@ async function checkEdibility() {
             </div>
         `;
     } catch (error) {
+        console.error('Caught error:', error); // For debugging
         resultDiv.innerHTML = `
             <div class="result-card not-edible">
                 <div style="color: #dc2626">${icons.error}</div>
-                <div class="verdict">${error.message}</div>
+                <div class="verdict">
+                    <strong>Error:</strong> ${error.message || 'Error making prediction. Please try again.'}
+                </div>
+                <div class="text-sm text-gray-600 mt-2">
+                    ${input.value.length > 30 ?
+                      `Your input is ${input.value.length} characters long. Please keep it under 30 characters.`
+                      : ''}
+                </div>
             </div>
         `;
     } finally {
