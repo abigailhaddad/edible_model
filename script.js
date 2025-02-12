@@ -1,3 +1,18 @@
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("Script loaded");
+    
+    const button = document.getElementById('checkButton');
+    const input = document.getElementById('textInput');
+    
+    button.addEventListener('click', checkEdibility);
+    input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            checkEdibility();
+        }
+    });
+});
+
+
 async function checkEdibility() {
     const icons = {
         edible: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -15,7 +30,7 @@ async function checkEdibility() {
         </svg>`
     };
 
-    const button = document.querySelector('button');
+    const button = document.getElementById('checkButton');  // CHANGED
     const input = document.getElementById('textInput');
     const resultDiv = document.getElementById('result');
 
