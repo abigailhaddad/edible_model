@@ -1,6 +1,6 @@
 #  Is It Edible?
 
-A machine learning project that fine-tunes ModernBERT for classifying items as edible or non-edible. The model is deployed via FastAPI on PythonAnywhere with a JavaScript frontend.
+A machine learning project that fine-tunes ModernBERT for classifying items as edible or non-edible. The model is deployed via FastAPI on PythonAnywhere with a JavaScript frontend. Uses Prefect for workflow orchestration and MLflow for experiment tracking.
 
 
 ## Project Structure
@@ -14,7 +14,9 @@ EDIBLE_MODEL/
 │   ├── frontend/
 │   ├── model/
 │   │   ├── inference.py     # Model inference class
-│   │   ├── train.py         # Training pipeline
+│   │   ├── train.py         # Training pipeline with Prefect flows
+│   │   ├── results/         # Training logs and error analysis
+│   │   ├── mlruns/         # MLflow experiment tracking
 │   │   └── test.py
 │   └── synthetic_data/
 │       └── data.json        # Training data
@@ -43,14 +45,20 @@ source myenv/bin/activate  # On Windows: myenv\Scripts\activate
 
 The model is based on ModernBERT-base and fine-tuned for binary classification:
 - Uses the `answerdotai/ModernBERT-base` checkpoint
-- Training includes evaluation metrics (accuracy, F1 score)
-- Confusion matrix analysis with example tracking
+- Training orchestrated with Prefect
+- Experiment tracking via MLflow
+
 
 ### Training Process
 
 The training pipeline (`train.py`) includes:
-- Data preprocessing and tokenization
+- Prefect flow for orchestrated execution
 - Train/test split with 80/20 ratio
+- MLflow experiment tracking:
+  - Automated metric logging
+  - Parameter tracking
+  - Model artifact management
+- Error analysis for training data improvement
 
 ## API Usage
 
@@ -113,3 +121,17 @@ The model can be accessed through a web interface at: https://abigailhaddad.gith
 ## License
 
 MIT license
+
+
+I'll enhance the README to include Prefect and MLflow details, particularly in the training process and project structure sections:
+
+```markdown
+#  Is It Edible?
+
+
+## Project Structure
+
+
+
+
+
