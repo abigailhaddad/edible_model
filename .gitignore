@@ -1,5 +1,18 @@
+# Python and environment
 myenv/
-/src/model/checkpoints/
-/src/model/results/
-/src/model/saved_model/
+__pycache__/
+*.pyc
 .DS_Store
+
+# Model specific directories
+/src/model/checkpoints/
+/src/model/mlruns/
+/src/model/saved_model/
+/src/model/results/*.csv
+/src/model/results/*.log
+
+# Keep results directory structure
+!/src/model/results/.gitkeep
+
+# IDE and temp files
+.ipynb_checkpoints/
