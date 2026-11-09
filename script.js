@@ -47,7 +47,7 @@ async function checkEdibility() {
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
+            const errorData = await response.json().catch(() => ({}));  // non-JSON body (e.g. an HTML 404 page)
             console.log('Error response:', errorData); // For debugging
             throw new Error(errorData.detail || 'Error making prediction');
         }
@@ -93,9 +93,3 @@ async function checkEdibility() {
         button.textContent = 'Check';
     }
 }
-
-document.getElementById('textInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        checkEdibility();
-    }
-});
